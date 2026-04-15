@@ -17,7 +17,6 @@
             color: #fff;
             overflow-x: hidden;
             font-family: system-ui, -apple-system, sans-serif;
-            transition: background 0.4s ease;
         }
 
         body.dark-mode {
@@ -43,7 +42,7 @@
             100% { transform: translateX(-30px) translateY(100vh) rotate(360deg); opacity: 0; }
         }
 
-        /* 控制按钮优化（移动端更友好） */
+        /* 控制面板 */
         .control-panel {
             position: fixed;
             top: 12px;
@@ -57,32 +56,31 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.35);
         }
 
-        #theme-toggle, #music-btn {
+        /* 音乐按钮 - 移到左上角并缩小 */
+        #music-btn {
             position: fixed;
-            right: 12px;
-            width: 50px;
-            height: 50px;
+            left: 15px;
+            top: 15px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 23px;
+            font-size: 20px;
             cursor: pointer;
             z-index: 1000;
             border: 3px solid rgba(255,255,255,0.75);
             background: rgba(255,255,255,0.18);
             backdrop-filter: blur(12px);
-            box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
             transition: all 0.3s ease;
             touch-action: manipulation;
         }
 
-        #theme-toggle { top: 75px; }
-        #music-btn { top: 135px; }
-
-        #theme-toggle:hover, #music-btn:hover {
+        #music-btn:hover {
             transform: scale(1.15);
-            box-shadow: 0 6px 22px rgba(138,43,226,0.7);
+            box-shadow: 0 6px 20px rgba(138,43,226,0.7);
         }
 
         #music-btn.playing {
@@ -91,77 +89,74 @@
 
         @keyframes pulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.5); }
-            70% { box-shadow: 0 0 0 18px rgba(255,255,255,0); }
+            70% { box-shadow: 0 0 0 16px rgba(255,255,255,0); }
         }
 
-        /* 头部紧凑优化 */
-        header .ui.segment {
-            padding: 1rem 0 1.2rem !important;
+        /* 主题按钮保持右上角 */
+        #theme-toggle {
+            position: fixed;
+            right: 12px;
+            top: 75px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 1000;
+            border: 3px solid rgba(255,255,255,0.75);
+            background: rgba(255,255,255,0.18);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
         }
 
-        .ui.header {
-            margin-bottom: 0.6rem !important;
+        #theme-toggle:hover {
+            transform: scale(1.12);
         }
 
-        /* 搜索框移动端优化 */
-        .ui.input input {
-            font-size: 16px !important; /* 防止iOS缩放 */
-        }
-
-        /* 卡片移动端优化 */
-        .ui.cards {
-            margin: 0 !important;
-        }
-
-        .ui.card {
-            background: rgba(255,255,255,0.09) !important;
-            border: 1px solid rgba(255,255,255,0.18) !important;
-            margin: 8px 0 !important;
-            transition: transform 0.2s;
-        }
-
-        .ui.card:hover {
-            transform: translateY(-3px);
-        }
-
-        /* 移动端卡片自动调整为更紧凑布局 */
+        /* 移动端优化 */
         @media (max-width: 767px) {
-            .ui.five.stackable.cards {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+            #music-btn {
+                left: 12px;
+                top: 12px;
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
             }
-            
-            .ui.card .header {
-                font-size: 1.05em !important;
-            }
-            
-            .ui.card .meta {
-                font-size: 0.85em !important;
+
+            #theme-toggle {
+                right: 12px;
+                top: 65px;
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
             }
 
             .control-panel {
+                top: 12px;
+                right: 12px;
                 padding: 6px 10px;
-                font-size: 14px;
             }
 
-            #theme-toggle, #music-btn {
-                width: 46px;
-                height: 46px;
-                font-size: 21px;
+            .ui.card {
+                margin: 6px 0 !important;
             }
+        }
 
-            #theme-toggle { top: 68px; }
-            #music-btn { top: 125px; }
+        .ui.inverted.segment { background: rgba(0,0,0,0.35) !important; }
+        .ui.card { 
+            background: rgba(255,255,255,0.09) !important; 
+            border: 1px solid rgba(255,255,255,0.18) !important; 
         }
 
         footer {
             text-align: center;
-            padding: 25px 15px 30px;
+            padding: 30px 15px 40px;
             opacity: 0.85;
             font-size: 0.92em;
-        }
-
-        .ui.container {
-            padding: 0 10px;
         }
     </style>
 </head>
@@ -171,11 +166,11 @@
         <button id="toggleSnow">Disable Snow</button>
     </div>
 
-    <!-- 主题切换 -->
-    <button id="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
-
-    <!-- 音乐播放按钮 -->
+    <!-- 音乐播放按钮（左上角，小尺寸） -->
     <button id="music-btn" aria-label="Music Player">🎵</button>
+
+    <!-- 主题切换按钮 -->
+    <button id="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
 
     <!-- 背景音乐 -->
     <audio id="bg-music" loop>
@@ -183,7 +178,7 @@
     </audio>
 
     <header>
-        <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui inverted vertical masthead center aligned segment" style="padding: 1rem 0 1.2rem;">
             <div class="ui container">
                 <div class="ui large secondary inverted menu">
                     <div class="item">
@@ -297,8 +292,8 @@
                     <i class="youtube icon"></i> Watch movies online
                 </h4>
                 <div class="ui five stackable cards">
-                    <!-- 这里请粘贴您原有的所有观影卡片（与上一版相同，已完整保留） -->
-                    <!-- 如果缺少具体卡片，请告诉我，我帮您补充完整 -->
+                    <!-- 请在这里粘贴您原有的所有观影卡片（从电影先生开始的所有 <a class="card">） -->
+                    <!-- 如果缺少，请告诉我，我帮您补全 -->
                 </div>
             </div>
 
@@ -312,12 +307,12 @@
     </footer>
 
     <script>
-        // ==================== 雪花效果（移动端优化） ====================
+        // ==================== 雪花效果 ====================
         const snowflakeCharacters = ["❄", "❅", "❆", "✻", "✼", "✽"];
         let snowflakeInterval = null;
         let snowEnabled = true;
         let currentSnowflakeCount = 0;
-        const MAX_SNOWFLAKES = 150;   // 移动端降低上限防止卡顿
+        const MAX_SNOWFLAKES = 150;
 
         function createSnowflake() {
             if (currentSnowflakeCount >= MAX_SNOWFLAKES) return;
@@ -351,7 +346,7 @@
             snowEnabled = !snowEnabled;
             if (snowEnabled) {
                 const isMobile = window.innerWidth <= 768;
-                const count = isMobile ? 2 : 4;   // 移动端更温和
+                const count = isMobile ? 2 : 4;
                 initializeSnowflakes(count);
                 document.getElementById("toggleSnow").textContent = "Disable Snow";
             } else {
@@ -386,7 +381,7 @@
             });
         })();
 
-        // ==================== 音乐播放 ====================
+        // ==================== 音乐播放（仅手动点击） ====================
         const musicBtn = document.getElementById('music-btn');
         const audio = document.getElementById('bg-music');
         let isPlaying = false;
@@ -397,7 +392,9 @@
                 musicBtn.classList.remove('playing');
                 musicBtn.textContent = '🎵';
             } else {
-                audio.play().catch(() => {});
+                audio.play().catch(err => {
+                    console.log("播放失败，请手动允许音频播放", err);
+                });
                 musicBtn.classList.add('playing');
                 musicBtn.textContent = '⏸';
             }
@@ -421,7 +418,6 @@
                 }
             }
         });
-
     </script>
 
     <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
